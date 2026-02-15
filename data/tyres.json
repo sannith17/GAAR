@@ -1,0 +1,28 @@
+[
+  {
+    "brand": "Maruti",
+    "model": "Swift Dzire",
+    "submodel": "LDI (Diesel)",
+    "tyreBrand": "JKTyre",
+    "serial": "Taximaxx",
+    "type": "Tubeless",
+    "loadIndex": "85",
+    "size": "165/80 R 14",
+    "sellingPrice": 3255,
+    "originalPrice": 3255,
+    "rating": 5
+  },
+  {
+    "brand": "Maruti",
+    "model": "Swift Dzire",
+    "submodel": "LDI (Diesel)",
+    "tyreBrand": "Apollo",
+    "serial": "Amazer 4G Life",
+    "type": "Tubeless",
+    "loadIndex": "85",
+    "size": "165/80 R 14",
+    "sellingPrice": 3490,
+    "originalPrice": 4319,
+    "rating": 4.5
+  }
+]
