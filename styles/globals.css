@@ -1,10 +1,8 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import url('https://fonts.googleapis.com/css2?family=Schwarz:wght@700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
 
 .font-racing { font-family: 'Racing Sans One', sans-serif; }
+.font-schwarz { font-family: 'Schwarz', sans-serif; }
 
 :root {
   --primary: #004aad;
@@ -12,9 +10,3 @@
 
 .text-primary { color: var(--primary); }
 .bg-primary { background-color: var(--primary); }
-
-@keyframes slide-in {
-  0% { transform: translateX(100%); opacity: 0; }
-  100% { transform: translateX(0); opacity: 1; }
-}
-.animate-slide-in { animation: slide-in 0.3s ease-out; }
