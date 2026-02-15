@@ -2,11 +2,13 @@ import Link from "next/link";
 
 export default function Navbar() {
   return (
-    <nav className="bg-primary text-white p-4 flex justify-between items-center">
-      <h1 className="text-3xl font-racing">GAAR</h1>
-      <div className="space-x-6">
-        <Link href="/">Home</Link>
-        <Link href="/cart">Cart</Link>
+    <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
+      <Link href="/">
+        <a className="text-primary font-bold text-2xl font-racing">TYREO</a>
+      </Link>
+      <div className="flex gap-6">
+        <Link href="/cart"><a className="text-gray-700 hover:text-primary">Warenkorb</a></Link>
+        <Link href="/contact"><a className="text-gray-700 hover:text-primary">Kontakt</a></Link>
       </div>
     </nav>
   );
