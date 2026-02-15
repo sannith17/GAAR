@@ -1,55 +1,84 @@
-import fs from "fs";
-import path from "path";
-import Papa from "papaparse";
+import { useState, useEffect, useContext } from "react";
+import { useRouter } from "next/router";
 import Navbar from "../../components/Navbar";
 import Footer from "../../components/Footer";
-import ProductCard from "../../components/ProductCard";
+import { CartContext } from "../../context/CartContext";
+import tyresData from "../../data/tyres.json";
 
-export async function getStaticPaths() {
-  const topModels = ["Swift", "Baleno", "Dzire", "Vitara", "Ertiga"];
-  const paths = topModels.map((m) => ({ params: { model: m } }));
-  return { paths, fallback: false };
-}
+export default function ModelPage() {
+  const router = useRouter();
+  const { model } = router.query;
+  const { addToCart } = useContext(CartContext);
 
-export async function getStaticProps({ params }) {
-  const filePath = path.join(process.cwd(), "Car_Tyres_Dataset.csv");
-  const csvFile = fs.readFileSync(filePath, "utf8");
+  const [tyres, setTyres] = useState([]);
+  const [sort, setSort] = useState("default");
+  const [filterSize, setFilterSize] = useState("all");
 
-  const parsed = Papa.parse(csvFile, { header: true, skipEmptyLines: true });
-  const tyres = parsed.data
-    .filter(item => item.Model?.includes(params.model))
-    .map(item => ({
-      brand: item.Brand || null,
-      model: item.Model || null,
-      submodel: item.Submodel || null,
-      tyreBrand: item["Tyre Brand"] || null,
-      serial: item["Serial No."] || null,
-      type: item.Type || null,
-      loadIndex: item["Load Index"] || null,
-      size: item.Size || null,
-      sellingPrice: item["Selling Price"] ? Number(item["Selling Price"].replace(/,/g,"")) : 0,
-      originalPrice: item["Original Price"] ? Number(item["Original Price"].replace(/,/g,"")) : 0,
-      rating: item.Rating || null,
-      description: `Hochwertiger Reifen von ${item["Tyre Brand"]}, passend für ${item.Model}`
-    }));
+  useEffect(() => {
+    if (model) {
+      const filtered = tyresData.filter((t) => t.model === model);
+      setTyres(filtered);
+    }
+  }, [model]);
 
-  return { props: { tyres, model: params.model } };
-}
+  const sortedTyres = [...tyres].sort((a, b) => {
+    if (sort === "price-asc") return a.sellingPrice - b.sellingPrice;
+    if (sort === "price-desc") return b.sellingPrice - a.sellingPrice;
+    return 0;
+  }).filter(t => filterSize === "all" ? true : t.size === filterSize);
 
-export default function ModelPage({ tyres, model }) {
+  const sizes = Array.from(new Set(tyres.map(t => t.size)));
+
   return (
     <>
       <Navbar />
-      <div className="p-6 md:p-12 bg-gray-50 min-h-screen">
-        <h1 className="text-4xl font-racing text-primary mb-6">
-          Reifen für {model}
-        </h1>
+
+      <div className="max-w-6xl mx-auto px-6 py-12">
+        <h1 className="text-4xl font-schwarz text-primary mb-6">{model} Reifen</h1>
+
+        {/* Sorting & Filtering */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-6">
+          <select
+            className="border px-4 py-2 rounded"
+            value={sort}
+            onChange={(e) => setSort(e.target.value)}
+          >
+            <option value="default">Sortieren</option>
+            <option value="price-asc">Preis: Niedrig → Hoch</option>
+            <option value="price-desc">Preis: Hoch → Niedrig</option>
+          </select>
+
+          <select
+            className="border px-4 py-2 rounded"
+            value={filterSize}
+            onChange={(e) => setFilterSize(e.target.value)}
+          >
+            <option value="all">Alle Größen</option>
+            {sizes.map((s) => (
+              <option key={s} value={s}>{s}</option>
+            ))}
+          </select>
+        </div>
+
+        {/* Tyres Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {tyres.map((product, index) => (
-            <ProductCard key={index} product={product} showPopup={() => {}} />
+          {sortedTyres.map((t, idx) => (
+            <div key={idx} className="border rounded-lg shadow p-4 flex flex-col items-center">
+              <img src={t.image || "/tyre-placeholder.jpg"} alt={t.tyreBrand} className="mb-2 w-40 h-40 object-contain"/>
+              <h2 className="font-semibold text-lg mb-1">{t.tyreBrand} - {t.serialNo}</h2>
+              <p className="text-gray-600 mb-2">{t.size}, {t.type}</p>
+              <p className="text-primary font-bold mb-2">€ {t.sellingPrice}</p>
+              <button
+                onClick={() => addToCart(t)}
+                className="bg-primary text-white px-4 py-2 rounded hover:bg-blue-700 transition"
+              >
+                In Warenkorb
+              </button>
+            </div>
           ))}
         </div>
       </div>
+
       <Footer />
     </>
   );
