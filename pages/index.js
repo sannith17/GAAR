@@ -15,17 +15,19 @@ export default function Home() {
       <Navbar />
 
       {/* Hero Section */}
-      <div className="relative h-screen bg-gray-50">
+      <div className="relative h-screen">
         <div
-          className="absolute inset-0 bg-cover bg-center opacity-30"
-          style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?tyre,racing,car')" }}
+          className="absolute inset-0 bg-cover bg-center opacity-40"
+          style={{
+            backgroundImage: "url('https://images.unsplash.com/photo-1619023980550-72b47d618c5e?auto=format&fit=crop&w=1600&q=80')"
+          }}
         ></div>
 
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
           <h1 className="text-5xl md:text-6xl font-schwarz text-primary font-bold mb-4">
             Willkommen bei GAAR
           </h1>
-          <p className="max-w-3xl text-white text-lg md:text-xl mb-8 font-racing">
+          <p className="max-w-3xl text-gray-400 text-lg md:text-xl mb-8 font-racing">
             Offizielle Reifen & Räder für Ihr Auto – TÜV/ECE zertifiziert, geprüft und bereit für deutsche Straßen. Qualität, Sicherheit und Leidenschaft für jedes Kilometer-Erlebnis.
           </p>
 
