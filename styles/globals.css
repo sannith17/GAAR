@@ -1,5 +1,9 @@
-@import url('https://fonts.googleapis.com/css2?family=Schwarz:wght@700&display=swap');
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 @import url('https://fonts.googleapis.com/css2?family=Racing+Sans+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Schwarz:wght@700&display=swap');
 
 .font-racing { font-family: 'Racing Sans One', sans-serif; }
 .font-schwarz { font-family: 'Schwarz', sans-serif; }
