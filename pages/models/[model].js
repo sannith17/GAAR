@@ -21,11 +21,13 @@ export default function ModelPage() {
     }
   }, [model]);
 
-  const sortedTyres = [...tyres].sort((a, b) => {
-    if (sort === "price-asc") return a.sellingPrice - b.sellingPrice;
-    if (sort === "price-desc") return b.sellingPrice - a.sellingPrice;
-    return 0;
-  }).filter(t => filterSize === "all" ? true : t.size === filterSize);
+  const sortedTyres = [...tyres]
+    .filter(t => filterSize === "all" ? true : t.size === filterSize)
+    .sort((a, b) => {
+      if (sort === "price-asc") return a.sellingPrice - b.sellingPrice;
+      if (sort === "price-desc") return b.sellingPrice - a.sellingPrice;
+      return 0;
+    });
 
   const sizes = Array.from(new Set(tyres.map(t => t.size)));
 
