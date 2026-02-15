@@ -5,7 +5,6 @@ import Footer from "../components/Footer";
 const topModels = ["Swift", "Baleno", "Dzire", "Vitara", "Ertiga"];
 
 export default function Home() {
-
   const playClick = () => {
     const audio = new Audio("/click.mp3");
     audio.play();
@@ -14,23 +13,23 @@ export default function Home() {
   return (
     <>
       <Navbar />
+
+      {/* Hero Section */}
       <div className="relative h-screen bg-gray-50">
-        {/* Hero Background */}
         <div
           className="absolute inset-0 bg-cover bg-center opacity-30"
           style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?tyre,racing,car')" }}
         ></div>
 
-        {/* Overlay */}
         <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
-          <h1 className="text-5xl md:text-6xl font-schwarz text-primary font-bold mb-6">
+          <h1 className="text-5xl md:text-6xl font-schwarz text-primary font-bold mb-4">
             Willkommen bei GAAR
           </h1>
-          <p className="max-w-3xl text-white text-lg md:text-xl mb-8">
-            Entdecken Sie hochwertige Reifen für Ihr Fahrzeug. Offizielle Reifen für deutsche Straßen, TÜV/ECE zertifiziert.
+          <p className="max-w-3xl text-white text-lg md:text-xl mb-8 font-racing">
+            Offizielle Reifen & Räder für Ihr Auto – TÜV/ECE zertifiziert, geprüft und bereit für deutsche Straßen. Qualität, Sicherheit und Leidenschaft für jedes Kilometer-Erlebnis.
           </p>
 
-          {/* Model Buttons */}
+          {/* Top Models */}
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
             {topModels.map((model) => (
               <Link key={model} href={`/models/${model}`}>
@@ -45,6 +44,29 @@ export default function Home() {
           </div>
         </div>
       </div>
+
+      {/* Description Section */}
+      <section className="max-w-6xl mx-auto px-6 py-12">
+        <h2 className="text-3xl font-schwarz text-primary mb-6">
+          5 Gründe, warum Sie Originalräder kaufen sollten!
+        </h2>
+        <p className="mb-4 text-gray-800">
+          Ihr Auto verdient nur das Beste. Originalräder bieten maximale Sicherheit, perfekte Kontrolle und ein Fahrerlebnis, das begeistert. Unsere Räder sind TÜV/ECE geprüft und von führenden Herstellern wie Pirelli, Michelin, Continental, Dunlop, Goodyear und Bridgestone getestet.
+        </p>
+        <p className="mb-4 text-gray-800">
+          Über 10.000 zufriedene Kunden vertrauen uns – nicht nur wegen der Qualität, sondern auch wegen unseres Service. Profitieren Sie von sofort montierbaren Kompletträdern, flexiblen Zahlungsmöglichkeiten und exklusiven Garantien.
+        </p>
+        <p className="mb-4 text-gray-800">
+          Originalräder garantieren Sicherheit, präzise Passgenauigkeit und Wertbeständigkeit. Bestellen Sie jetzt und erleben Sie Fahrsicherheit, Fahrspaß und Perfektion bei jedem Kilometer.
+        </p>
+        <p className="mb-4 text-gray-800">
+          Serviceversprechen: Beratung per E-Mail, WhatsApp oder Telefon; 100 Tage Rückgaberecht; schnelle Auftragsabwicklung; jederzeit Sendungsverfolgung.
+        </p>
+        <p className="mb-4 text-gray-800">
+          GAAR – Vertrauen, das bewegt. Kaufen Sie nur geprüfte Originalräder für Ihr Fahrzeug.
+        </p>
+      </section>
+
       <Footer />
     </>
   );
