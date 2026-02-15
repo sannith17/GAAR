@@ -11,22 +11,29 @@ export async function getStaticProps() {
 
   const parsed = Papa.parse(csvFile, {
     header: true,
-    skipEmptyLines: true
+    skipEmptyLines: true,
+    transformHeader: (header) => header.trim()
   });
 
-  const tyres = parsed.data.map((item) => ({
-    brand: item.Brand,
-    model: item.Model,
-    submodel: item.Submodel,
-    tyreBrand: item["Tyre Brand"],
-    serial: item["Serial No."],
-    type: item.Type,
-    loadIndex: item["Load Index"],
-    size: item.Size,
-    sellingPrice: Number(item["Selling Price"].replace(/,/g, "")),
-    originalPrice: Number(item["Original Price"].replace(/,/g, "")),
-    rating: item.Rating || "N/A"
-  }));
+  const tyres = parsed.data
+    .filter((item) => item.Brand) // remove empty rows
+    .map((item) => ({
+      brand: item.Brand || null,
+      model: item.Model || null,
+      submodel: item.Submodel || null,
+      tyreBrand: item["Tyre Brand"] || null,
+      serial: item["Serial No."] || null,
+      type: item.Type || null,
+      loadIndex: item["Load Index"] || null,
+      size: item.Size || null,
+      sellingPrice: item["Selling Price"]
+        ? Number(item["Selling Price"].replace(/,/g, ""))
+        : 0,
+      originalPrice: item["Original Price"]
+        ? Number(item["Original Price"].replace(/,/g, ""))
+        : 0,
+      rating: item.Rating ? item.Rating : null
+    }));
 
   return {
     props: { tyres }
