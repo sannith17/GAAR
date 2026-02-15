@@ -5,11 +5,10 @@ export default function Navbar() {
     <nav className="bg-white shadow-md px-6 py-4 flex justify-between items-center">
       <Link href="/">
         <a className="flex items-center gap-2">
-          {/* Tyre icon for G */}
-          <span className="inline-block w-10 h-10 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">
+          {/* Tyre G */}
+          <span className="inline-block w-12 h-12 rounded-full bg-gray-800 flex items-center justify-center text-white font-bold">
             G
           </span>
-          {/* Remaining letters in Schwarz */}
           <span className="font-schwarz text-3xl text-primary">AAR</span>
         </a>
       </Link>
