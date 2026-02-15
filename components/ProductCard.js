@@ -6,7 +6,7 @@ export default function ProductCard({ product, showPopup }) {
 
   const handleAdd = () => {
     addToCart(product);
-    showPopup && showPopup("Item added to cart!");
+    showPopup && showPopup("Artikel zum Warenkorb hinzugefügt!");
   };
 
   return (
@@ -29,7 +29,7 @@ export default function ProductCard({ product, showPopup }) {
         onClick={handleAdd}
         className="bg-primary text-white w-full mt-3 py-2 rounded hover:bg-blue-700 transition"
       >
-        Add to Cart
+        In den Warenkorb
       </button>
     </div>
   );
