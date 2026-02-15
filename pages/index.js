@@ -1,107 +1,63 @@
-import fs from "fs";
-import path from "path";
-import { useState } from "react";
-import Papa from "papaparse";
+import Link from "next/link";
 import Navbar from "../components/Navbar";
 import Footer from "../components/Footer";
-import ProductCard from "../components/ProductCard";
 
-export async function getStaticProps() {
-  const filePath = path.join(process.cwd(), "Car_Tyres_Dataset.csv");
-  const csvFile = fs.readFileSync(filePath, "utf8");
+const topModels = ["Swift", "Baleno", "Dzire", "Vitara", "Ertiga"];
 
-  const parsed = Papa.parse(csvFile, {
-    header: true,
-    skipEmptyLines: true,
-    transformHeader: (h) => h.trim()
-  });
-
-  const tyres = parsed.data
-    .filter((item) => item.Brand)
-    .map((item) => ({
-      brand: item.Brand || null,
-      model: item.Model || null,
-      submodel: item.Submodel || null,
-      tyreBrand: item["Tyre Brand"] || null,
-      serial: item["Serial No."] || null,
-      type: item.Type || null,
-      loadIndex: item["Load Index"] || null,
-      size: item.Size || null,
-      sellingPrice: item["Selling Price"] ? Number(item["Selling Price"].replace(/,/g,"")) : 0,
-      originalPrice: item["Original Price"] ? Number(item["Original Price"].replace(/,/g,"")) : 0,
-      rating: item.Rating || null,
-      description: `High-quality tyre from ${item["Tyre Brand"]}, fits ${item.Model}`
-    }));
-
-  const brands = [...new Set(tyres.map(t => t.brand))].slice(0,6);
-
-  return { props: { tyres, brands } };
-}
-
-export default function Home({ tyres, brands }) {
-  const [selectedBrand, setSelectedBrand] = useState(null);
-  const [sortBy, setSortBy] = useState(null);
-  const [popup, setPopup] = useState("");
-
-  // Filter & sort
-  let displayed = tyres;
-  if (selectedBrand) displayed = displayed.filter(t => t.brand === selectedBrand);
-  if (sortBy === "priceLow") displayed = [...displayed].sort((a,b)=>a.sellingPrice - b.sellingPrice);
-  if (sortBy === "priceHigh") displayed = [...displayed].sort((a,b)=>b.sellingPrice - a.sellingPrice);
-
-  const showPopup = (msg) => {
-    setPopup(msg);
-    setTimeout(() => setPopup(""), 1500);
-  }
-
+export default function Home() {
   return (
     <>
       <Navbar />
-      <div className="p-6 md:p-8 bg-gray-50 min-h-screen">
-        <h1 className="text-4xl font-racing text-primary mb-6">TYREO - Official Tyres & Wheels Store</h1>
+      <div className="relative h-screen bg-gray-50">
+        {/* Hero Background */}
+        <div
+          className="absolute inset-0 bg-cover bg-center opacity-30"
+          style={{ backgroundImage: "url('https://source.unsplash.com/1600x900/?tyre,car')" }}
+        ></div>
 
-        {/* Brand Icons */}
-        <div className="flex flex-wrap gap-4 mb-6">
-          {brands.map(b => (
-            <button
-              key={b}
-              onClick={() => setSelectedBrand(b)}
-              className={`px-4 py-2 rounded shadow font-semibold transition ${
-                selectedBrand === b ? "bg-primary text-white" : "bg-white text-primary hover:bg-blue-100"
-              }`}
-            >
-              {b}
-            </button>
-          ))}
-          <button
-            onClick={() => setSelectedBrand(null)}
-            className="px-4 py-2 rounded shadow bg-gray-100 text-gray-700 hover:bg-gray-200"
-          >
-            All Brands
-          </button>
-        </div>
+        {/* Overlay content */}
+        <div className="relative z-10 flex flex-col items-center justify-center h-full text-center px-6">
+          <h1 className="text-5xl md:text-6xl font-racing text-primary font-bold mb-6">
+            Willkommen bei TYREO
+          </h1>
+          <p className="max-w-3xl text-white text-lg md:text-xl mb-8">
+            Entdecken Sie hochwertige Reifen für Ihr Fahrzeug. Wir bieten offizielle
+            Reifen für deutsche Straßen, zertifiziert nach allen geltenden Vorschriften
+            und Gesetzen. Sicherheit, Qualität und Zuverlässigkeit stehen bei uns an erster Stelle.
+          </p>
 
-        {/* Sorting */}
-        <div className="flex flex-wrap gap-4 mb-6 items-center">
-          <span className="font-semibold">Sort by:</span>
-          <button onClick={() => {setSortBy("priceLow"); showPopup("Sorted: Price Low → High")}} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Price ↑</button>
-          <button onClick={() => {setSortBy("priceHigh"); showPopup("Sorted: Price High → Low")}} className="px-3 py-1 rounded bg-gray-200 hover:bg-gray-300">Price ↓</button>
-        </div>
-
-        {/* Popup */}
-        {popup && (
-          <div className="fixed top-5 right-5 bg-primary text-white px-4 py-2 rounded shadow-lg z-50 animate-slide-in">
-            {popup}
+          {/* Top Car Models */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-6">
+            {topModels.map((model) => (
+              <Link key={model} href={`/models/${model}`}>
+                <a className="bg-white rounded-lg shadow-lg px-4 py-6 hover:shadow-xl transition text-primary font-semibold">
+                  {model}
+                </a>
+              </Link>
+            ))}
           </div>
-        )}
-
-        {/* Products Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
-          {displayed.map((product, index) => (
-            <ProductCard key={index} product={product} showPopup={showPopup} />
-          ))}
         </div>
       </div>
+
+      {/* German Compliance Section */}
+      <section className="bg-white py-12 px-6 md:px-24 text-gray-700">
+        <h2 className="text-2xl font-bold mb-4">Rechtliche Hinweise & Sicherheit</h2>
+        <p className="mb-3">
+          Alle unsere Reifen entsprechen der EU- und deutschen Straßenverkehrsordnung (StVO)
+          sowie den geltenden TÜV- und ECE-Zertifizierungen. Wir übernehmen die Verantwortung
+          für korrekte Produktinformationen, sodass Ihre Sicherheit garantiert ist.
+        </p>
+        <p className="mb-3">
+          Bitte beachten Sie, dass die Einhaltung von zulässigen Reifenkennzeichnungen, Last- und
+          Geschwindigkeitsindex sowie Wartungsrichtlinien verpflichtend ist. TYREO übernimmt keine
+          Haftung bei unsachgemäßer Montage oder Nutzung von nicht zugelassenen Reifen.
+        </p>
+        <p>
+          Für weitere Informationen über Reifenkennzeichnungen, Umweltaspekte und gesetzliche Vorschriften
+          besuchen Sie bitte <a href="https://www.adac.de/" target="_blank" className="text-primary underline">ADAC.de</a>.
+        </p>
+      </section>
+
       <Footer />
     </>
   );
